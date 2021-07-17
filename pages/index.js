@@ -1,7 +1,8 @@
-import Box from '../src/components/Box'
-import MainGrid from '../src/components/MainGrid'
-import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons'
-import { ProfileRelationsBoxWrapper } from '../src/components/profileRelations'
+import { useState } from 'react';
+import Box from '../src/components/Box';
+import MainGrid from '../src/components/MainGrid';
+import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
+import { ProfileRelationsBoxWrapper } from '../src/components/profileRelations';
 
 // const Title = styled.h1`
 //   font-size: 50px;
@@ -27,6 +28,8 @@ function ProfileSidebar(props) {
 
 export default function Home() {
   const UsuarioAleatorio = 'ChristanDaniel'
+  const [comunidade, setComunidades ] = useState(['Alurakut']);
+  
   const pessoasFavoritas = ['juunegreiros', 'omariosouto', 'peas', 'rafaballerini', 'diego3g', 'felipefialho']
   
   return (
@@ -49,9 +52,57 @@ export default function Home() {
            <OrkutNostalgicIconSet />
           </Box>
 
+          <Box>
+            <h2 className="subTitle">O que você deseja fazer?</h2>
+
+            <form onSubmit={function handleCriarComunidade(event) {
+              event.preventDefault();
+
+              const comunidadesAtualizadas = [...comunidade, 'Alura Stars'];
+              setComunidades(comunidadesAtualizadas)
+            }}>
+              <div>
+                <input 
+                placeholder="qual vai ser o nome da sua comunidade?"
+                name="title"
+                aria-label="Qual vai ser o nome da sua comunidade?"
+                type="text"
+                />
+              </div>
+              <div>
+                <input 
+                placeholder="Coloque uma URL para usarmos de capa?"
+                name="image"
+                aria-label="Coloque uma URL para usarmos de capa?"
+                type="text"
+                />
+              </div>
+
+              <button>
+                Criar comunidade
+              </button>
+
+            </form>
+          </Box>
+
         </div>
       
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
+
+        <ProfileRelationsBoxWrapper>
+        <ul>
+          {comunidade.map((itemAtual) => {
+            return(
+              <li>
+              <a href={`/users/${itemAtual}`} key={itemAtual}>
+                <img src={`http://placehold.it/300x300`} />
+                <span>{itemAtual}</span>
+              </a>
+              </li>
+            )
+          })}
+        </ul>
+        </ProfileRelationsBoxWrapper>
 
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
