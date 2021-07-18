@@ -11,7 +11,7 @@ import { ProfileRelationsBoxWrapper } from '../src/components/profileRelations';
 function ProfileSidebar(props) {
   return(
     <Box as="aside">
-      <img src={`http://github.com/${props.githubUser}.png`} style={{ borderRadius: '8px'}}/>
+      <img src={`http://github.com/${props.githubUser}.png`} style={{ borderRadius: '70px'}}/>
       <hr />
 
       <p>
@@ -101,40 +101,41 @@ export default function Home() {
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
 
         <ProfileRelationsBoxWrapper>
-        <h2 className="smallTitle">comunidade ({pessoasFavoritas.length})</h2>
+          <h2 className="smallTitle">comunidade ({pessoasFavoritas.length})</h2>
 
-        <ul>
-          {comunidades.map((itemAtual) => {
-            return(
-              <li key={itemAtual.id}>
-              <a href={`/users/${itemAtual.title}`}>
-                <img src={itemAtual.image} />
-                <span>{itemAtual.title}</span>
-              </a>
-              </li>
-            )
-          })}
-        </ul>
+          <ul>
+            {comunidades.map((itemAtual) => {
+              return(
+                <li key={itemAtual.id}>
+                  <a href={`/users/${itemAtual.title}`}>
+                    <img src={itemAtual.image} />
+                    <span>{itemAtual.title}</span>
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
         </ProfileRelationsBoxWrapper>
 
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Pessoas da comunidades ({pessoasFavoritas.length})
-            </h2>
+        <ProfileRelationsBoxWrapper>
+          <h2 className="smallTitle">
+            Pessoas da comunidades ({pessoasFavoritas.length})
+          </h2>
 
-            <ul>
-                {pessoasFavoritas.map((itemAtual) => {
-                  return(
-                    <li key={itemAtual}>
-                    <a href={`/users/${itemAtual}`}>
-                      <img src={`http://github.com/${itemAtual}.png`} />
-                      <span>{itemAtual}</span>
-                    </a>
-                   </li>
-                  )
-                })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+          <ul>
+            {pessoasFavoritas.map((itemAtual) => {
+              return(
+                <li key={itemAtual}>
+                  <a href={`/users/${itemAtual}`} style={{ borderRadius: '25px'}}>
+                    <img src={`http://github.com/${itemAtual}.png`} />
+                    <span>{itemAtual}</span>
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </ProfileRelationsBoxWrapper>
+
         </div>
 
       </MainGrid>
