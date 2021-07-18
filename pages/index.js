@@ -35,6 +35,14 @@ export default function Home() {
   }]);
   
   const pessoasFavoritas = ['juunegreiros', 'omariosouto', 'peas', 'rafaballerini', 'diego3g', 'felipefialho']
+
+  const seguidores = fetch('https://api.github.com/users/ChristanDaniel/followers')
+      .then(function (respostaDoServidor) {
+        return respostaDoServidor.json();
+      })
+      .then(function(respostaCompleta) {
+
+      })
   
   return (
     <>
@@ -99,6 +107,23 @@ export default function Home() {
         </div>
       
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
+
+        <ProfileRelationsBoxWrapper>
+          <h2 className="smallTitle">Seguidores ({Seguidores.length})</h2>
+
+          <ul>
+            {comunidades.map((itemAtual) => {
+              return(
+                <li key={itemAtual.id}>
+                  <a href={`/users/${itemAtual.title}`}>
+                    <img src={itemAtual.image} />
+                    <span>{itemAtual.title}</span>
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </ProfileRelationsBoxWrapper>
 
         <ProfileRelationsBoxWrapper>
           <h2 className="smallTitle">comunidade ({pessoasFavoritas.length})</h2>
