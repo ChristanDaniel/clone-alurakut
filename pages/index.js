@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '../src/components/Box';
 import MainGrid from '../src/components/MainGrid';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
@@ -57,14 +57,17 @@ export default function Home() {
   
   const pessoasFavoritas = ['juunegreiros', 'omariosouto', 'peas', 'rafaballerini', 'diego3g', 'felipefialho']
 
-  const seguidores = fetch('https://api.github.com/users/ChristanDaniel/followers')
+  const [seguidores, setSeguidores] = useState([]);
+  useEffect(function() {
+    fetch('https://api.github.com/users/ChristanDaniel/followers')
       .then(function (respostaDoServidor) {
         return respostaDoServidor.json();
       })
       .then(function(respostaCompleta) {
-
+        setSeguidores(respostaCompleta)
       })
-  
+  })
+
   return (
     <>
      <AlurakutMenu githubUser={UsuarioAleatorio}/>
