@@ -31,18 +31,18 @@ function ProfileRelationsBox(props) {
    <ProfileRelationsBoxWrapper>
       <h2 className="smallTitle">{props.title} ({props.items.length})</h2>
 
-      <ul>
-        {/* {comunidades.map((itemAtual) => {
+      {/* <ul>
+        {seguidores.map((imagemDoUsuario) => {
           return(
-            <li key={itemAtual.id}>
-              <a href={`/users/${itemAtual.title}`}>
-                <img src={itemAtual.image} />
-                <span>{itemAtual.title}</span>
+           <li key={imagemDoUsuario.id}>
+              <a href={`/users/${imagemDoUsuario}`} >
+                <img src={`http://github.com/${imagemDoUsuario}.png`} />
+                <span>{imagemDoUsuario}</span>
               </a>
             </li>
           )
-        })} */}
-      </ul>
+        })}
+      </ul> */}
     </ProfileRelationsBoxWrapper>
   )
 }
@@ -57,6 +57,7 @@ export default function Home() {
   
   const pessoasFavoritas = ['juunegreiros', 'omariosouto', 'peas', 'rafaballerini', 'diego3g', 'felipefialho']
 
+
   const [seguidores, setSeguidores] = useState([]);
   useEffect(function() {
     fetch('https://api.github.com/users/ChristanDaniel/followers')
@@ -66,7 +67,18 @@ export default function Home() {
       .then(function(respostaCompleta) {
         setSeguidores(respostaCompleta)
       })
-  })
+
+      // API GraphQL
+      fetch('https://graphq1.datocms.com/', {
+        method: 'POST',
+        headers: {
+          'Authorization' : '5a76ebb66ef94135cc8b0c27bc0ec6',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }
+      })
+  }, [])
+
 
   return (
     <>
@@ -132,7 +144,7 @@ export default function Home() {
       
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
 
-        <ProfileRelationsBox title="Seguidores" items={seguidores}/>
+        <ProfileRelationsBox title="Seguidores" items={seguidores} />
 
         <ProfileRelationsBoxWrapper>
           <h2 className="smallTitle">comunidade ({pessoasFavoritas.length})</h2>
