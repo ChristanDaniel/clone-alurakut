@@ -68,14 +68,14 @@ export default function Home() {
     fetch('https://graphql.datocms.com/', {
       method: 'POST',
       headers: {
-        'Authorization': '5a76ebb66ef94135cc8b0c27bc0ec6',
+        'Authorization': '4e950070f5d7071115462904ea3943',
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
       body: JSON.stringify({ "query": `query {
         allCommunities {
-          title
           id
+          title
           imageUrl
           creatorSlug
         }
@@ -119,11 +119,25 @@ export default function Home() {
               const comunidade = {
                 id: new Date().toISOString(),
                 title: dadosDoForm.get('title'),
-                image: dadosDoForm.get('image'),
+                imageUrl: dadosDoForm.get('image'),
+                creatorSlug: UsuarioAleatorio,
               }
 
-              const comunidadesAtualizadas = [...comunidades, comunidade];
-              setComunidades(comunidadesAtualizadas)
+              fetch('/api/comunidades', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(comunidade)
+              })
+              .then(async (response) => {
+                const dados = await response.json();
+                console.log(dados.registroCriado);
+                const comunidade = dados.registroCriado;
+                const comunidadesAtualizadas = [...comunidades, comunidade];
+                setComunidades(comunidadesAtualizadas)
+              })
+
             }}>
               <div>
                 <input 
