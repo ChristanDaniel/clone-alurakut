@@ -49,11 +49,7 @@ function ProfileRelationsBox(props) {
 
 export default function Home() {
   const UsuarioAleatorio = 'ChristanDaniel'
-  const [comunidades, setComunidades ] = useState([{
-    id: '123153218651861542521352',
-    title: 'Eu odeio acordar cedo',
-    image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
-  }]);
+  const [comunidades, setComunidades ] = useState([]);
   
   const pessoasFavoritas = ['juunegreiros', 'omariosouto', 'peas', 'rafaballerini', 'diego3g', 'felipefialho']
 
@@ -69,14 +65,27 @@ export default function Home() {
       })
 
       // API GraphQL
-      fetch('https://graphq1.datocms.com/', {
-        method: 'POST',
-        headers: {
-          'Authorization' : '5a76ebb66ef94135cc8b0c27bc0ec6',
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        'Authorization': '5a76ebb66ef94135cc8b0c27bc0ec6',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ "query": `query {
+        allCommunities {
+          title
+          id
+          imageUrl
+          creatorSlug
         }
-      })
+      }` })
+    })
+    .then((response) => response.json()) // Pega retorno do response.json() já retorna
+    .then((respostaCompleta) => {
+      const comunidadesVindaDoDato = respostaCompleta.data.allCommunities;
+      setComunidades(comunidadesVindaDoDato)
+    })
   }, [])
 
 
@@ -147,14 +156,14 @@ export default function Home() {
         <ProfileRelationsBox title="Seguidores" items={seguidores} />
 
         <ProfileRelationsBoxWrapper>
-          <h2 className="smallTitle">comunidade ({pessoasFavoritas.length})</h2>
+          <h2 className="smallTitle">comunidade ({comunidades.length})</h2>
 
           <ul>
             {comunidades.map((itemAtual) => {
               return(
                 <li key={itemAtual.id}>
-                  <a href={`/users/${itemAtual.title}`}>
-                    <img src={itemAtual.image} />
+                  <a href={`/users/${itemAtual.id}`}>
+                    <img src={itemAtual.imageUrl} />
                     <span>{itemAtual.title}</span>
                   </a>
                 </li>
