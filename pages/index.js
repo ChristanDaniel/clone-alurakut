@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import nookies from 'nookies'
 import Box from '../src/components/Box';
 import MainGrid from '../src/components/MainGrid';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
@@ -47,8 +48,8 @@ function ProfileRelationsBox(props) {
   )
 }
 
-export default function Home() {
-  const UsuarioAleatorio = 'ChristanDaniel'
+export default function Home(props) {
+  const UsuarioAleatorio = props.githubUser;
   const [comunidades, setComunidades ] = useState([]);
   
   const pessoasFavoritas = ['juunegreiros', 'omariosouto', 'peas', 'rafaballerini', 'diego3g', 'felipefialho']
@@ -212,4 +213,11 @@ export default function Home() {
   )
 }
 
-{/* <Box> Comunidades </Box> */}
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      githubUser: 'peas'
+    }
+  }
+}
