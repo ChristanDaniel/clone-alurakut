@@ -19,8 +19,20 @@ export default function LoginScreen() {
                 <section className="formArea">
                     <form className="box" onSubmit={(infosDosEventos) => {
                     infosDosEventos.preventDefault();
-                    router.push('/', {})
                     console.log('Usuário', githubUser)
+                    fetch('https://alurakut.vercel.app/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'content-type' : 'application/json'
+                        },
+                        body: JSON.stringify({ githubUser: 'ChristanDaniel'})
+                    })
+                    .then(async (respostaDoServer) => {
+                         const dadosDaResposta = await respostaDoServer.json()
+                         console.log(dadosDaResposta.token)
+                         router.push('/', {})
+
+                        })
                     }}>
                         <p>
                         Acesse agora mesmo com seu usuário do <strong>GitHub</strong>!
@@ -33,6 +45,10 @@ export default function LoginScreen() {
                             setGithubUser(event.target.value)
                          }}
                          />
+                         {githubUser.length === 0
+                         ? 'Preencha o campo'
+                         : ''
+                        }
                         <button type="submit">
                         Login
                         </button>
