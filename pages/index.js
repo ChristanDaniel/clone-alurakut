@@ -4,7 +4,9 @@ import jwt from 'jsonwebtoken';
 import Box from '../src/components/Box';
 import MainGrid from '../src/components/MainGrid';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
-import { ProfileRelationsBox } from '../src/components/ProfileRelationsBox'
+import ProfileRelationsBox from '../src/components/ProfileRelationsBox';
+import ProfileRelationsBoxWrapper from '../src/components/ProfileRelations';
+
 
 // const Title = styled.h1`
 //   font-size: 50px;
@@ -30,7 +32,7 @@ function ProfileSidebar(props) {
 
 
 export default function Home(props) {
-  const UsuarioAleatorio = props.githubUser;
+  const githubUser = props.githubUser;
   const [comunidades, setComunidades ] = useState([]);
   
   const pessoasFavoritas = ['juunegreiros', 'omariosouto', 'peas', 'rafaballerini', 'diego3g', 'felipefialho']
@@ -38,13 +40,20 @@ export default function Home(props) {
 
   const [seguidores, setSeguidores] = useState([]);
   useEffect(function() {
-    fetch('https://api.github.com/users/ChristanDaniel/followers')
-      .then(function (respostaDoServidor) {
+    fetch(`https://api.github.com/users/${githubUser}/followers`)
+    .then(function (respostaDoServidor) {
+      if(respostaDoServidor.ok){
         return respostaDoServidor.json();
-      })
-      .then(function(respostaCompleta) {
-        setSeguidores(respostaCompleta)
-      })
+      }
+
+      throw new Error('Aconteceu um problema na API do Github :( - Código ' + respostaDoServidor.status);
+    })
+    .then(function (respostaConvertida) {
+      setSeguidores(respostaConvertida);
+    })
+    .catch(function (erro) {
+      console.log(erro);
+    })
 
       // API GraphQL
     fetch('https://graphql.datocms.com/', {
@@ -73,19 +82,19 @@ export default function Home(props) {
 
   return (
     <>
-     <AlurakutMenu githubUser={UsuarioAleatorio}/>
+     <AlurakutMenu githubUser={githubUser}/>
 
       <MainGrid>
 
         <div className="profileArea" style={{ gridArea: 'profileArea' }}>
-          <ProfileSidebar githubUser={UsuarioAleatorio}/>
+          <ProfileSidebar githubUser={githubUser}/>
         </div>
 
         <div className="welcomeArea" style={{ gridArea: 'welcomeArea' }}>
 
           <Box>
             <h1 className="title">
-            Bem Vindo(a)
+            Bem Vindo(a), {githubUser}
             </h1>
 
            <OrkutNostalgicIconSet />
@@ -102,7 +111,7 @@ export default function Home(props) {
                 id: new Date().toISOString(),
                 title: dadosDoForm.get('title'),
                 imageUrl: dadosDoForm.get('image'),
-                creatorSlug: UsuarioAleatorio,
+                creatorSlug: githubUser,
               }
 
               fetch('/api/comunidades', {
@@ -149,7 +158,7 @@ export default function Home(props) {
       
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
 
-        <ProfileRelationsBox title="Seguidores" items={seguidores} />
+        <ProfileRelationsBox title="Seguidores" itens={seguidores} />
 
         <ProfileRelationsBoxWrapper>
           <h2 className="smallTitle">comunidade ({comunidades.length})</h2>

@@ -1,25 +1,25 @@
-import { ProfileRelationsBoxWrapper } from '../profileRelations';
+import ProfileRelationsBoxWrapper from '../ProfileRelations';
 
-
-function ProfileRelationsBox(props) {
-    return (
-     <ProfileRelationsBoxWrapper>
-        <h2 className="smallTitle">{props.title} ({props.items.length})</h2>
-  
-        <ul>
-          {props.itens.slice(0,6).map((itemAtual) => {
-            return(
-             <li key={itemAtual.id}>
-                <a href={itemAtual.html_url} >
-                  <img src={itemAtual.avatar_url} />
-                  <span>{itemAtual}</span>
-                </a>
+function ProfileRelationsBox(propriedades) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {propriedades.title} ({propriedades.itens.length})
+      </h2>
+      <ul>
+        {propriedades.itens.slice(0,6).map((itemAtual) => {
+          return (
+              <li key={itemAtual.id}>
+              <a href={itemAtual.html_url}>
+                <img src={itemAtual.avatar_url} />
+                <span>{itemAtual.login}</span>
+              </a>
               </li>
-            )
-          })}
-        </ul>
-      </ProfileRelationsBoxWrapper>
-    )
+          )
+        })}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  )
 }
 
-export default ProfileRelationsBox;
+export default ProfileRelationsBox
