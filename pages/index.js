@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import Box from '../src/components/Box';
 import MainGrid from '../src/components/MainGrid';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
-import { ProfileRelationsBoxWrapper } from '../src/components/profileRelations';
+import { ProfileRelationsBox } from '../src/components/ProfileRelationsBox'
 
 // const Title = styled.h1`
 //   font-size: 50px;
@@ -28,26 +28,6 @@ function ProfileSidebar(props) {
   )
 }
 
-function ProfileRelationsBox(props) {
-  return (
-   <ProfileRelationsBoxWrapper>
-      <h2 className="smallTitle">{props.title} ({props.items.length})</h2>
-
-      {/* <ul>
-        {seguidores.map((imagemDoUsuario) => {
-          return(
-           <li key={imagemDoUsuario.id}>
-              <a href={`/users/${imagemDoUsuario}`} >
-                <img src={`http://github.com/${imagemDoUsuario}.png`} />
-                <span>{imagemDoUsuario}</span>
-              </a>
-            </li>
-          )
-        })}
-      </ul> */}
-    </ProfileRelationsBoxWrapper>
-  )
-}
 
 export default function Home(props) {
   const UsuarioAleatorio = props.githubUser;
