@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken';
 import Box from '../src/components/Box';
 import MainGrid from '../src/components/MainGrid';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
-import ProfileRelationsBox from '../src/components/ProfileRelationsBox';
-import ProfileRelationsBoxWrapper from '../src/components/ProfileRelations';
+// import ProfileRelationsBox from '../src/components/ProfileRelationsBox';
+import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
 
 
 // const Title = styled.h1`
@@ -30,6 +30,33 @@ function ProfileSidebar(props) {
   )
 }
 
+function ProfileRelationsBox(props) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">{props.title} ({props.total})</h2>
+
+      <ul>
+        {props.items.slice(0,6).map((itemAtual) => {
+          return (
+            <li key={itemAtual.id}>
+              <a href={itemAtual.html_url} target="_blank" rel="noopener noreferrer" title="Site do usuário">
+                <img src={itemAtual.avatar_url} alt="Avatar do usuário" />
+                <span>{itemAtual.login}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+      <hr />
+      <p>
+        <a className="boxLink" href={`/amigos`} >
+          Ver todos
+        </a>
+      </p>
+    </ProfileRelationsBoxWrapper>
+  )
+}
+
 
 export default function Home(props) {
   const githubUser = props.githubUser;
@@ -40,20 +67,14 @@ export default function Home(props) {
 
   const [seguidores, setSeguidores] = useState([]);
   useEffect(function() {
-    fetch(`https://api.github.com/users/${githubUser}/followers`)
-    .then(function (respostaDoServidor) {
-      if(respostaDoServidor.ok){
+    const urlFollowers = `https://api.github.com/users/${githubUser}/followers`
+    fetch(urlFollowers)
+      .then(function (respostaDoServidor) {
         return respostaDoServidor.json();
-      }
-
-      throw new Error('Aconteceu um problema na API do Github :( - Código ' + respostaDoServidor.status);
-    })
-    .then(function (respostaConvertida) {
-      setSeguidores(respostaConvertida);
-    })
-    .catch(function (erro) {
-      console.log(erro);
-    })
+      })
+      .then(function (respostaCompleta) {
+        setSeguidores(respostaCompleta);
+      })
 
       // API GraphQL
     fetch('https://graphql.datocms.com/', {
@@ -158,7 +179,7 @@ export default function Home(props) {
       
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
 
-        <ProfileRelationsBox title="Seguidores" itens={seguidores} />
+        <ProfileRelationsBox title="Seguidores" items={seguidores} />
 
         <ProfileRelationsBoxWrapper>
           <h2 className="smallTitle">comunidade ({comunidades.length})</h2>
