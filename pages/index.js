@@ -61,12 +61,9 @@ function ProfileRelationsBox(props) {
 export default function Home(props) {
   const githubUser = props.githubUser;   //Foto de Perfil
   const [comunidades, setComunidades ] = useState([]);
-  const [followersLenght, setFollowersLenght] = useState([]);
+  const [Numbersfollowers, setNumbersfollowers] = useState([]);
   const [seguindo, setSeguindo] = useState([]);
   const [seguidores, setSeguidores] = useState([]);
-  
-  const pessoasFavoritas = ['juunegreiros', 'omariosouto', 'peas', 'rafaballerini', 'diego3g', 'felipefialho']
-
 
   useEffect(function() {
     //Followers
@@ -93,9 +90,9 @@ export default function Home(props) {
     const urlNumeros = `https://api.github.com/users/${githubUser}`;
     fetch(urlNumeros)
     .then(resposta => resposta.json())
-    .then(respostaJson => setFollowersLenght(respostaJson));
+    .then(respostaJson => setNumbersfollowers(respostaJson));
 
-      // API GraphQL
+    //API GraphQL
     fetch('https://graphql.datocms.com/', {
       method: 'POST',
       headers: {
@@ -114,8 +111,9 @@ export default function Home(props) {
     })
     .then((response) => response.json()) // Pega retorno do response.json() já retorna
     .then((respostaCompleta) => {
-      const comunidadesVindaDoDato = respostaCompleta.data.allCommunities;
-      setComunidades(comunidadesVindaDoDato)
+      const comunidadesVindasDoDato = respostaCompleta.data.allCommunities;
+      console.log(comunidadesVindasDoDato)
+      setComunidades(comunidadesVindasDoDato)
     })
   }, [])
 
@@ -148,7 +146,6 @@ export default function Home(props) {
               const dadosDoForm = new FormData(event.target);
 
               const comunidade = {
-                id: new Date().toISOString(),
                 title: dadosDoForm.get('title'),
                 imageUrl: dadosDoForm.get('image'),
                 creatorSlug: githubUser,
@@ -198,17 +195,15 @@ export default function Home(props) {
       
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
 
-        <ProfileRelationsBox title="Seguidores" items={seguidores} total={followersLenght.followers} />
-        <ProfileRelationsBox title="Seguindo" items={seguindo} total={followersLenght.following} />
 
         <ProfileRelationsBoxWrapper>
           <h2 className="smallTitle">comunidade ({comunidades.length})</h2>
 
           <ul>
-            {comunidades.map((itemAtual) => {
+            {comunidades.slice(0,6).map((itemAtual) => {
               return(
                 <li key={itemAtual.id}>
-                  <a href={`/users/${itemAtual.id}`}>
+                  <a href={`/communities/${itemAtual.id}`}>
                     <img src={itemAtual.imageUrl} />
                     <span>{itemAtual.title}</span>
                   </a>
@@ -218,24 +213,8 @@ export default function Home(props) {
           </ul>
         </ProfileRelationsBoxWrapper>
 
-        <ProfileRelationsBoxWrapper>
-          <h2 className="smallTitle">
-            Pessoas da comunidades ({pessoasFavoritas.length})
-          </h2>
-
-          <ul>
-            {pessoasFavoritas.map((itemAtual) => {
-              return(
-                <li key={itemAtual}>
-                  <a href={`/users/${itemAtual}`} style={{ borderRadius: '25px'}}>
-                    <img src={`http://github.com/${itemAtual}.png`} />
-                    <span>{itemAtual}</span>
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
-        </ProfileRelationsBoxWrapper>
+        <ProfileRelationsBox title="Seguidores" items={seguidores} total={Numbersfollowers.followers} />
+        <ProfileRelationsBox title="Seguindo" items={seguindo} total={Numbersfollowers.following} />
 
         </div>
 
