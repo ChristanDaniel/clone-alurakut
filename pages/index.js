@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import Box from '../src/components/Box';
 import MainGrid from '../src/components/MainGrid';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
-// import ProfileRelationsBox from '../src/components/ProfileRelationsBox';
+import { HeadPage } from '../src/components/HeadPage'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
 
 
@@ -120,6 +120,7 @@ export default function Home(props) {
 
   return (
     <>
+
      <AlurakutMenu githubUser={githubUser}/>
 
       <MainGrid>
@@ -211,6 +212,12 @@ export default function Home(props) {
               )
             })}
           </ul>
+          <hr />
+          <p>
+            <a className="boxLink" href={`/comunidades`} >
+              Ver todos
+            </a>
+          </p>
         </ProfileRelationsBoxWrapper>
 
         <ProfileRelationsBox title="Seguidores" items={seguidores} total={Numbersfollowers.followers} />
