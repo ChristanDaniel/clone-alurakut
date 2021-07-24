@@ -33,7 +33,7 @@ function ProfileSidebar(props) {
 function ProfileRelationsBox(props) {
   return (
     <ProfileRelationsBoxWrapper>
-      <h2 className="smallTitle">{props.title} ({props.total})</h2>
+      <h2 className="smallTitle">{props.title} ({props.total}) </h2>
 
       <ul>
         {props.items.slice(0,6).map((itemAtual) => {
@@ -59,22 +59,41 @@ function ProfileRelationsBox(props) {
 
 
 export default function Home(props) {
-  const githubUser = props.githubUser;
+  const githubUser = props.githubUser;   //Foto de Perfil
   const [comunidades, setComunidades ] = useState([]);
+  const [followersLenght, setFollowersLenght] = useState([]);
+  const [seguindo, setSeguindo] = useState([]);
+  const [seguidores, setSeguidores] = useState([]);
   
   const pessoasFavoritas = ['juunegreiros', 'omariosouto', 'peas', 'rafaballerini', 'diego3g', 'felipefialho']
 
 
-  const [seguidores, setSeguidores] = useState([]);
   useEffect(function() {
+    //Followers
     const urlFollowers = `https://api.github.com/users/${githubUser}/followers`
     fetch(urlFollowers)
-      .then(function (respostaDoServidor) {
-        return respostaDoServidor.json();
-      })
-      .then(function (respostaCompleta) {
-        setSeguidores(respostaCompleta);
-      })
+    .then(function (respostaDoServidor) {
+      return respostaDoServidor.json();
+    })
+    .then(function (respostaCompleta) {
+      setSeguidores(respostaCompleta);
+    })
+
+    //Following
+    const urlFollowing = `https://api.github.com/users/${githubUser}/following`
+    fetch(urlFollowing)
+    .then(function (respostaDoServidor) {
+      return respostaDoServidor.json();
+    })
+    .then(function (respostaCompleta) {
+      setSeguindo(respostaCompleta);
+    })
+    
+    //Followers lenght
+    const urlNumeros = `https://api.github.com/users/${githubUser}`;
+    fetch(urlNumeros)
+    .then(resposta => resposta.json())
+    .then(respostaJson => setFollowersLenght(respostaJson));
 
       // API GraphQL
     fetch('https://graphql.datocms.com/', {
@@ -179,7 +198,8 @@ export default function Home(props) {
       
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
 
-        <ProfileRelationsBox title="Seguidores" items={seguidores} />
+        <ProfileRelationsBox title="Seguidores" items={seguidores} total={followersLenght.followers} />
+        <ProfileRelationsBox title="Seguindo" items={seguindo} total={followersLenght.following} />
 
         <ProfileRelationsBoxWrapper>
           <h2 className="smallTitle">comunidade ({comunidades.length})</h2>
