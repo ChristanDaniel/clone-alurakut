@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import nookies from 'nookies'
-
+import HeadPage from '../public/index'
 
 export default function LoginScreen() {
     const router = useRouter();
