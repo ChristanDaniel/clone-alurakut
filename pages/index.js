@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import Box from '../src/components/Box';
 import MainGrid from '../src/components/MainGrid';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
-import { HeadPage } from '../src/components/HeadPage'
+import HeadPage from '../public/index'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
 
 
@@ -120,7 +120,7 @@ export default function Home(props) {
 
   return (
     <>
-
+      <HeadPage />
      <AlurakutMenu githubUser={githubUser}/>
 
       <MainGrid>

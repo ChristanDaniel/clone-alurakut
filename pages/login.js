@@ -7,6 +7,8 @@ export default function LoginScreen() {
     const router = useRouter();
     const [githubUser, setGithubUser ] = useState('');
     return (
+     <>
+        <HeadPage />
         <main style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <div className="loginScreen">
                 <section className="logoArea">
@@ -79,5 +81,6 @@ export default function LoginScreen() {
                 </footer>
             </div>
         </main>
+     </>
     )
 }
